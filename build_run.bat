@@ -19,37 +19,59 @@ set "mingw_gfortran_fn=gfortran.exe"
 set "mingw_gfortran_path=%mingw_bin_dir%\%mingw_gfortran_fn%"
 setlocal enabledelayedexpansion
 set "program_name=main"
+set "all_scripts_list="
 for /R %%f in (*.f90) do (
-    set "found="
+    set "all_scripts_list=!all_scripts_list! %%f"
+
+    @REM search program name begin
     for /F "usebackq delims=" %%l in ("%%f") do (
-        if not defined found (
-            set "line=%%l"
-            rem Remove comments starting with '!'
-            for /F "delims=!" %%a in ("!line!") do set "line=%%a"
-            rem Trim leading and trailing spaces
-            for /F "tokens=*" %%b in ("!line!") do set "line=%%b"
-            if not "!line!"=="" (
-                rem Split line into words
-                for /F "tokens=1,2" %%c in ("!line!") do (
-                    set "word1=%%c"
-                    set "word2=%%d"
-                    if defined word2 (
-                        rem Check if the first word is 'program' (case-insensitive)
-                        if /I "!word1!"=="program" (
-                            set "program_name=!word2!"
-                            set "found=1"
-                        ) else if /I "!word1!"=="module" (
-                            %mingw_gfortran_path% -c %%f
-                        )
+        set "line=%%l"
+        for /F "delims=!" %%a in ("!line!") do set "line=%%a"
+        for /F "tokens=*" %%b in ("!line!") do set "line=%%b"
+        if not "!line!"=="" (
+            for /F "tokens=1,2" %%c in ("!line!") do (
+                set "word1=%%c"
+                set "word2=%%d"
+                if defined word2 (
+                    if /I "!word1!"=="program" (
+                        set "program_name=!word2!"
                     )
                 )
             )
         )
     )
+    @REM search program name end
 )
-%mingw_gfortran_path% *.f90 *.o -o %program_name%
-del /Q *.o
-del /Q *.mod
-%program_name%
+
+del Makefile 2>nul
+(
+    for %%L in (
+        " FC = gfortran"
+        " FFLAGS = -O2"
+        " TARGET = !program_name!.exe"
+        " SRCS = !all_scripts_list!"
+        " OBJS = $(SRCS:.f90=.o)"
+        " DEPS = $(SRCS:.f90=.d)"
+        "."
+        " all: $(TARGET)"
+        "."
+        " $(TARGET): $(OBJS)"
+        " 	$(FC) $(FFLAGS) -o $(TARGET) $(OBJS)"
+        "."
+        " %%.o: %%.f90"
+        " 	$(FC) $(FFLAGS) -c $< -o $@"
+        " 	$(FC) -MM $< > $*.d"
+        "."
+        " -include $(DEPS)"
+        "."
+        " clean:"
+        " 	del /Q $(OBJS) $(DEPS) $(TARGET)"
+    ) do (
+        echo%%~L
+    )
+) > Makefile
+
+%mingw_bin_dir%\mingw32-make.exe
+@REM %program_name%
 endlocal
 cd %curdir%
