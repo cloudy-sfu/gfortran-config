@@ -48,6 +48,7 @@ for /R %%f in (*.f90) do (
 )
 
 del /Q CMakeLists.txt 2>nul
+del /Q %program_name%.exe 2>nul
 set "mingw_gfortran_path_unix=%mingw_gfortran_path:\=/%"
 set "all_scripts_list_unix=%all_scripts_list:\=/%"
 (
