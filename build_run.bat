@@ -28,9 +28,12 @@ for /R %%f in (*.f90) do (
     set "all_scripts_list=!all_scripts_list! %%f"
 
     @REM search program name begin
+    @REM read the file path in loop variable line by line, and assigns each line to a loop variable.
     for /F "usebackq delims=" %%l in ("%%f") do (
         set "line=%%l"
+        @REM set line to the first token before an exclamation mark (!).
         for /F "delims=!" %%a in ("!line!") do set "line=%%a"
+        @REM trim any leading or trailing whitespace from line.
         for /F "tokens=*" %%b in ("!line!") do set "line=%%b"
         if not "!line!"=="" (
             for /F "tokens=1,2" %%c in ("!line!") do (
@@ -48,6 +51,7 @@ for /R %%f in (*.f90) do (
 )
 
 del /Q CMakeLists.txt 2>nul
+del /Q %program_name%.exe 2>nul
 set "mingw_gfortran_path_unix=%mingw_gfortran_path:\=/%"
 set "all_scripts_list_unix=%all_scripts_list:\=/%"
 (
