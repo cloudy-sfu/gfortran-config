@@ -1,12 +1,14 @@
-# Windows `gfortran` setup
+# `gfortran` config
 
-Windows batch script to automatically build and run Fortran code in MinGW-w64 `gfortran` environment
+The script to automatically build and run Fortran code in `gfortran` environment
+
+## Usage
+
+### Windows
 
 ![](https://shields.io/badge/dependencies-MinGW--w64-green)
 ![](https://shields.io/badge/dependencies-CMake-green)
 ![](https://shields.io/badge/OS-Windows_10_64--bit-lightgrey)
-
-## Usage
 
 Open `build_run.bat`, fill in the following variables.
 
@@ -19,3 +21,18 @@ Open `build_run.bat`, fill in the following variables.
 *`CMake` is used to automatically analyze dependencies.*
 
 Run `build_run.bat`.
+
+### Ubuntu 22.04 LTS
+
+![](https://shields.io/badge/dependencies-gcc-green)
+![](https://shields.io/badge/dependencies-gfortran-green)
+![](https://shields.io/badge/dependencies-cmake-green)
+![](https://shields.io/badge/OS-Ubuntu_22.04_LTS-lightgrey)
+
+To build and run Fortran program, run the following command with an optional `folder` argument.
+
+```bash
+bash build_run.sh [folder]
+```
+
+The argument `folder` is the root folder of Fortran program. If no argument is provided, the target is the current directory by default.
