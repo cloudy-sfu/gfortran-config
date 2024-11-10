@@ -1,7 +1,6 @@
 @echo off
 @REM --------------- USER INPUT BEGIN ---------------
 set "mingw_bin_dir="
-set "program_root="
 set "cmake_bin_dir="
 @REM --------------- USER INPUT END   ---------------
 
@@ -9,13 +8,13 @@ if not defined mingw_bin_dir (
     echo Error: Variable "mingw_bin_dir" is not defined or is empty.
     exit /b 1
 )
-if not defined program_root (
-    echo Error: Variable "program_root" is not defined or is empty.
-    exit /b 1
-)
 if not defined cmake_bin_dir (
     echo Error: Variable "cmake_bin_dir" is not defined or is empty.
     exit /b 1
+)
+set "program_root=%~1"
+if not defined program_root (
+    set "program_root=%cd%"
 )
 set "curdir=%cd%"
 cd %program_root%
