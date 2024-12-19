@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and Run Fortran",
+            "type": "shell",
+            "command": "build_run.bat",
+            "args": [
+                "${fileDirname}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Task to build and run Fortran code using gfortran."
+        }
+    ]
+}
