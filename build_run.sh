@@ -17,9 +17,9 @@ if ! command -v cmake &> /dev/null; then
 fi
 
 curdir=$(pwd)
-cd $program_root
+cd "$program_root"
 
-all_scripts_list=$(find . -type f -name "*.f90")
+all_scripts_list=$(find . -type f -name "*.f90" | sed 's/ /\\ /g')
 program_name="main"
 # Loop through all .f90 files recursively
 for f in $all_scripts_list; do
@@ -49,7 +49,7 @@ cmake_minimum_required(VERSION 3.22)
 set(CMAKE_Fortran_COMPILER gfortran)
 project($program_name Fortran)
 enable_language(Fortran)
-add_executable($program_name$(printf " %s" $all_scripts_list))
+add_executable($program_name$(printf " \"%s\"" $all_scripts_list))
 EOF
 
 cmake .
