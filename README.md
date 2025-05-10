@@ -19,27 +19,27 @@ In Windows, the user should assign the installed location of `gfortran` and `cma
 
 ## Usage
 
-> [!NOTE]
->
-> **System dependent information**
->
-> The following instructions are only based on Windows, but this program can also run in other systems.
->
-> In Ubuntu, replace `<script>.bat` to `bash <script>.sh`; others are all the same. 
-
 ### Build & run
-
-To build and run Fortran program, run the following command with an optional `folder` argument.
 
 Windows:
 
+To build and run Fortran program, run the following command in Windows command prompt (CMD).
+
 ```
-build_run.bat [folder]
+build_run.bat $folder
+```
+
+Ubuntu:
+
+To build and run Fortran program, run the following command in terminal.
+
+```
+build_run.sh $folder
 ```
 
 Arguments:
 
-| Name     | Description                                                 | Required?                                  |
-| -------- | ----------------------------------------------------------- | ------------------------------------------ |
-| `folder` | The root directory of the Fortran program to build and run. | *Optional*  default: the current directory |
+| Name      | Description                                                 | Required?                                  |
+| --------- | ----------------------------------------------------------- | ------------------------------------------ |
+| `$folder` | The root directory of the Fortran program to build and run. | *Optional*  default: the current directory |
 
